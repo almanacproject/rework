@@ -42,4 +42,6 @@ def main():
                 print(string, end='')
                 print('There was no value for {} in the dictionary.'.format(string), file=sys.stderr)
 
-main()
+
+if __name__ == "__main__":
+    main()
