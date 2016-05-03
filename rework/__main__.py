@@ -35,7 +35,11 @@ def main():
     t = rework.Template(REGEX, dictionary)
 
     for line in args.template:
-        for string in t.replace_template(line):
-            print(string, end='')
+        for string, bool in t.replace_template(line):
+            if bool:
+                print(string, end='')
+            else:
+                print(string, end='')
+                print('There was no value for {} in the dictionary.'.format(string), file=sys.stderr)
 
 main()
