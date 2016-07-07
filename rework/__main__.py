@@ -2,7 +2,7 @@ import argparse
 import json
 import rework
 import sys
-
+import yaml
 
 REGEX = r"""
 \$\$\{              # Start of the pattern
@@ -20,10 +20,21 @@ REGEX = r"""
 def parse_args():
     """ Prarse the arguments """
     parser = argparse.ArgumentParser(description='Rework a simple template engine')
-    parser.add_argument('template',
+    parser.add_argument('config',
                         type=argparse.FileType('r'),
-                        help='template file ')
+                        help='rework configuration file ')
     return parser.parse_args()
+
+
+def rework_file(src_str, dest_str, engine):
+    with open(src_str) as src, open(dest_str, 'w') as dest:
+        for line in src:
+            for string, bool in engine.replace_template(line):
+                if bool:
+                    print(string, end='', file=dest)
+                else:
+                    print(string, end='', file=dest)
+                    print('There was no value for {} in the dictionary.'.format(string), file=sys.stderr)
 
 
 def main():
@@ -31,16 +42,13 @@ def main():
     args = parse_args()
 
     dictionary = json.load(sys.stdin)
+    config = yaml.load(args.config)["rework"]
 
-    t = rework.Template(REGEX, dictionary)
+    e = rework.Engine(REGEX, dictionary)
 
-    for line in args.template:
-        for string, bool in t.replace_template(line):
-            if bool:
-                print(string, end='')
-            else:
-                print(string, end='')
-                print('There was no value for {} in the dictionary.'.format(string), file=sys.stderr)
+    for line in config["templates"]:
+        src, dest = line
+        rework_file(src, dest, e)
 
 
 if __name__ == "__main__":

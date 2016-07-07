@@ -1,0 +1,5 @@
+rework:
+    templates: 
+        - [ ./example/mosquitto.conf.template, ./example/mosquitto.conf]
+        - [ ./example/mosquitto.conf.template, ./example/mosquitto2.conf]
+        - [ ./example/mosquitto.conf.template, ./example/mosquitto3.conf]

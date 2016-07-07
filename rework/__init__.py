@@ -7,7 +7,7 @@ def grouper(n, iterable, fillvalue=''):
     return itertools.zip_longest(*[iter(iterable)]*n, fillvalue=fillvalue)
 
 
-class Template(object):
+class Engine(object):
 
     """Docstring for Template. """
 
