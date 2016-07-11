@@ -1,5 +1,7 @@
 import argparse
 import json
+import os
+import os.path
 import rework
 import sys
 import yaml
@@ -37,6 +39,11 @@ def rework_file(src_str, dest_str, engine):
                     print('There was no value for {} in the dictionary.'.format(string), file=sys.stderr)
 
 
+def create_path(file_path):
+    dir_path = os.path.dirname(file_path)
+    os.makedirs(dir_path,  exist_ok=True)
+
+
 def main():
     """ Main function """
     args = parse_args()
@@ -48,6 +55,7 @@ def main():
 
     for line in config["templates"]:
         src, dest = line
+        create_path(dest)
         rework_file(src, dest, e)
 
 
